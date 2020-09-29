@@ -1,0 +1,7 @@
+9/29/2020
+* Initialize GLFW - DONE
+* GLFW Utils (Input, error callback) - DONE
+* Loger - DONE
+
+9/30/2020
+* Initialize Vulkan API
