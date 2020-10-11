@@ -4,4 +4,8 @@
 * Loger - DONE
 
 9/30/2020
-* Initialize Vulkan API
+* Initialize Vulkan API - more in next subsection
+
+10/11/2020
+* Initialize Render API - abstracion:
+    RenderDevice object -> stores a reference to API (Vulkan, OpenGL ES) and is the main object to render and other GPU activities
