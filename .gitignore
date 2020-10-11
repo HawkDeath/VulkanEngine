@@ -1,4 +1,8 @@
+# IDE
 .vs/
 .vscode/
 x64/
 VulkanEngine/x64/
+
+# logs
+VulkanEngine/*.log
