@@ -4,10 +4,8 @@
 #include "../common/Profiler.h"
 
 namespace VulkanEngine {
-Window::Window(const WindowDesc& winDesc, const std::string& title)
-    : window(nullptr),
-      windowDescription(winDesc),
-      minimalized(false),
+Window::Window(const WindowDesc &winDesc, const std::string &title)
+    : window(nullptr), windowDescription(winDesc), minimalized(false),
       resized(false) {
   PROFILE_FUNCTION()
   glfwSetErrorCallback(glfwUtils::error_callback);
@@ -15,7 +13,6 @@ Window::Window(const WindowDesc& winDesc, const std::string& title)
   if (glfwInit() != GLFW_TRUE) {
     throw std::exception("Failed to initialize GLFW");
   }
-  
 
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
   // window support only one monitor at the same time
@@ -74,7 +71,7 @@ void Window::update() {
   }
 }
 
-void Window::handleFramebufferResize(GLFWwindow* win, int w, int h) {
+void Window::handleFramebufferResize(GLFWwindow *win, int w, int h) {
   PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
   window->resized = true;
@@ -83,7 +80,7 @@ void Window::handleFramebufferResize(GLFWwindow* win, int w, int h) {
   // TODO: Vulkan must handle this
 }
 
-void Window::handleWindowResize(GLFWwindow* win, int w, int h) {
+void Window::handleWindowResize(GLFWwindow *win, int w, int h) {
   PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
   window->resized = true;
@@ -92,32 +89,32 @@ void Window::handleWindowResize(GLFWwindow* win, int w, int h) {
   // TODO: Vulkan must handle this
 }
 
-void Window::handleMinimalize(GLFWwindow* win, int status) {
+void Window::handleMinimalize(GLFWwindow *win, int status) {
   PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
   window->minimalized = static_cast<bool>(status);
 }
 
-void Window::handleKeyInput(GLFWwindow* win, int key, int scancode, int action,
+void Window::handleKeyInput(GLFWwindow *win, int key, int scancode, int action,
                             int mods) {
   PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
-  Input* input = window->input.get();
+  Input *input = window->input.get();
   input->handleKeyInput(key, scancode, action, mods);
 }
 
-void Window::handleMousePosition(GLFWwindow* win, double xPos, double yPos) {
+void Window::handleMousePosition(GLFWwindow *win, double xPos, double yPos) {
   PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
-  Input* input = window->input.get();
+  Input *input = window->input.get();
   input->handleMousePosition(xPos, yPos);
 }
 
-void Window::handleMouseButton(GLFWwindow* win, int mouseButton, int action,
+void Window::handleMouseButton(GLFWwindow *win, int mouseButton, int action,
                                int mods) {
   PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
-  Input* input = window->input.get();
+  Input *input = window->input.get();
   input->handleMouseButton(mouseButton, action, mods);
 }
-}  // namespace HawkEngine
+} // namespace VulkanEngine

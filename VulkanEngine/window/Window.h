@@ -12,19 +12,18 @@
 // class HelloTriangleApplication;
 
 namespace VulkanEngine {
-class Window {
+class Window final {
   //	friend class HelloTriangleApplication;
- public:
-  Window(const WindowDesc& winDesc,
-         const std::string& title = "framework-test");
+public:
+  Window(const WindowDesc &winDesc,
+         const std::string &title = "framework-test");
   ~Window();
 
   GLFWwindow *getWindowHandler() const { return window; }
-  
 
-  const WindowDesc& getDescription() const { return windowDescription; }
+  const WindowDesc &getDescription() const { return windowDescription; }
 
-  Input& getInput() const { return *input; }
+  Input &getInput() const { return *input; }
 
   const std::int32_t getFrameBufferWidth() const { return framebufferWidth; }
 
@@ -40,25 +39,25 @@ class Window {
 
   void update();
 
- private:
+private:
   void destroyWindow();
 
-  static void handleFramebufferResize(GLFWwindow* win, int w, int h);
-  static void handleWindowResize(GLFWwindow* win, int w, int h);
-  static void handleMinimalize(GLFWwindow* win, int status);
+  static void handleFramebufferResize(GLFWwindow *win, int w, int h);
+  static void handleWindowResize(GLFWwindow *win, int w, int h);
+  static void handleMinimalize(GLFWwindow *win, int status);
 
-  static void handleKeyInput(GLFWwindow* win, int key, int scancode, int action,
+  static void handleKeyInput(GLFWwindow *win, int key, int scancode, int action,
                              int mods);
-  static void handleMousePosition(GLFWwindow* win, double xPos, double yPos);
-  static void handleMouseButton(GLFWwindow* win, int mouseButton, int action,
+  static void handleMousePosition(GLFWwindow *win, double xPos, double yPos);
+  static void handleMouseButton(GLFWwindow *win, int mouseButton, int action,
                                 int mods);
 
-  static Window* getInternalWindow(GLFWwindow* win) {
-    return static_cast<Window*>(glfwGetWindowUserPointer(win));
+  static Window *getInternalWindow(GLFWwindow *win) {
+    return static_cast<Window *>(glfwGetWindowUserPointer(win));
   }
 
- private:
-  GLFWwindow* window;
+private:
+  GLFWwindow *window;
   WindowDesc windowDescription;
 
   std::int32_t framebufferWidth;
@@ -69,4 +68,4 @@ class Window {
 
   std::unique_ptr<Input> input;
 };
-}  // namespace HawkEngine
+} // namespace VulkanEngine

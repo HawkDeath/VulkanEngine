@@ -78,9 +78,7 @@ bool Input::keyDown(Key key) const {
   return keysDown.find(key) != keysDown.end();
 }
 
-bool Input::keyUp(Key key) const {
-  return keysUp.find(key) != keysUp.end();
-}
+bool Input::keyUp(Key key) const { return keysUp.find(key) != keysUp.end(); }
 
 bool Input::keyHold(Key key) const {
   return keysStates.find(key) != keysStates.end();
@@ -147,7 +145,7 @@ void Input::setCursorMode(InputUtils::CursorMode mode) {
   double cursorX, cursorY;
   glfwGetCursorPos(window, &cursorX, &cursorY);
 
-  mousePosition = { static_cast<float>(cursorX), static_cast<float>(cursorY) };
+  mousePosition = {static_cast<float>(cursorX), static_cast<float>(cursorY)};
   mouseDeltaValue = {};
 }
 } // namespace VulkanEngine

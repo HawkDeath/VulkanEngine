@@ -8,10 +8,10 @@
 #include "InputUtils.h"
 
 namespace VulkanEngine {
-class Input {
+class Input final {
   friend class Window;
 
- public:
+public:
   // Keyboard
   bool keyDown(InputUtils::Key key) const;
   bool keyUp(InputUtils::Key key) const;
@@ -27,7 +27,7 @@ class Input {
   glm::vec2 mouseDelta() const { return mouseDeltaValue; }
   void setCursorMode(InputUtils::CursorMode mode);
 
- private:
+private:
   Input(GLFWwindow *window);
 
   GLFWwindow *window;
@@ -38,7 +38,7 @@ class Input {
 
   void reset();
 
- private:
+private:
   // Keyboard
   std::unordered_set<InputUtils::Key> keysStates;
   std::unordered_set<InputUtils::Key> keysDown;
@@ -54,8 +54,8 @@ class Input {
   glm::vec2 mouseDeltaValue;
 };
 
-static inline InputUtils::KeyState operator|(
-    const InputUtils::KeyState &left, const InputUtils::KeyState &right) {
+static inline InputUtils::KeyState
+operator|(const InputUtils::KeyState &left, const InputUtils::KeyState &right) {
   return static_cast<InputUtils::KeyState>(static_cast<std::int8_t>(left) |
                                            static_cast<std::int8_t>(right));
 }
@@ -66,8 +66,8 @@ static inline InputUtils::KeyState operator|=(InputUtils::KeyState &left,
   return left;
 }
 
-static inline InputUtils::KeyState operator&(
-    const InputUtils::KeyState &left, const InputUtils::KeyState &right) {
+static inline InputUtils::KeyState
+operator&(const InputUtils::KeyState &left, const InputUtils::KeyState &right) {
   return static_cast<InputUtils::KeyState>(static_cast<std::int8_t>(left) &
                                            static_cast<std::int8_t>(right));
 }
@@ -78,4 +78,4 @@ static inline InputUtils::KeyState operator&=(InputUtils::KeyState &left,
   return left;
 }
 
-}  // namespace HawkEngine
+} // namespace VulkanEngine

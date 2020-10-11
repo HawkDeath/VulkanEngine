@@ -4,7 +4,7 @@
 #include <string>
 
 namespace VulkanEngine {
-struct WindowDesc {
+struct WindowDesc final {
   explicit WindowDesc() = default;
 
   std::int32_t width = 1280;

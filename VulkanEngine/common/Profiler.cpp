@@ -1,6 +1,6 @@
 #include "Profiler.h"
 
-#pragma warning(disable: 4996)
+#pragma warning(disable : 4996)
 
 namespace VulkanEngine {
 
@@ -74,11 +74,11 @@ void ProfilerTimer::stop() {
           .time_since_epoch()
           .count();
 
-  std::uint32_t threadID =
-      static_cast<std::uint32_t>(std::hash<std::thread::id>{}(std::this_thread::get_id()));
+  std::uint32_t threadID = static_cast<std::uint32_t>(
+      std::hash<std::thread::id>{}(std::this_thread::get_id()));
 
-  Profiler::getInstance().writeProfile( { name.data(), start, end, threadID } );
+  Profiler::getInstance().writeProfile({name.data(), start, end, threadID});
 
   timerIsStop = true;
 }
-}  
+} // namespace VulkanEngine
