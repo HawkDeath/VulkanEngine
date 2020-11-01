@@ -9,3 +9,8 @@
 10/11/2020
 * Initialize Render API - abstracion:
     RenderDevice object -> stores a reference to API (Vulkan, OpenGL ES) and is the main object to render and other GPU activities
+
+11/01/2020
+* Plan change, only Vulkan API. Features:
+    > Graph render
+    > PBR
