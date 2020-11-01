@@ -86,5 +86,11 @@
     <ClInclude Include="renderer\VulkanDevice.h">
       <Filter>Header Files\renderer</Filter>
     </ClInclude>
+    <ClInclude Include="renderer\VulkanInitializers.h">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\VulkanUtils.h">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

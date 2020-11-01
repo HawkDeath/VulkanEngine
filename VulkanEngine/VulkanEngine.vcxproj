@@ -192,6 +192,8 @@
     <ClInclude Include="common\Utils.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="renderer\VulkanDevice.h" />
+    <ClInclude Include="renderer\VulkanInitializers.h" />
+    <ClInclude Include="renderer\VulkanUtils.h" />
     <ClInclude Include="window\Input.h" />
     <ClInclude Include="window\InputUtils.h" />
     <ClInclude Include="window\Window.h" />

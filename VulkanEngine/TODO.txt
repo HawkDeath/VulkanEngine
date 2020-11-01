@@ -12,5 +12,6 @@
 
 11/01/2020
 * Plan change, only Vulkan API. Features:
+    > Input system: if state not good look, change to callback system
     > Graph render
     > PBR

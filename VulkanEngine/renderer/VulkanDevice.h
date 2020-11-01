@@ -10,6 +10,8 @@ public:
   VulkanDevice(Window *window);
   ~VulkanDevice();
 
+  void initialize();
+
   /*
   * call to all drawcall in queue
   */
