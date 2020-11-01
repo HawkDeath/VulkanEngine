@@ -24,13 +24,13 @@ public:
   bool mouseButtonHold(InputUtils::MouseButton button) const;
   InputUtils::KeyState mouseState(InputUtils::MouseButton button) const;
 
-  glm::vec2 mouseDelta() const { return mouseDeltaValue; }
+  glm::vec2 mouseDelta() const { return mMouseDeltaValue; }
   void setCursorMode(InputUtils::CursorMode mode);
 
 private:
   Input(GLFWwindow *window);
 
-  GLFWwindow *window;
+  GLFWwindow *mWindow;
 
   void handleKeyInput(int key, int scancode, int action, int mods);
   void handleMousePosition(double xPos, double yPos);
@@ -40,18 +40,18 @@ private:
 
 private:
   // Keyboard
-  std::unordered_set<InputUtils::Key> keysStates;
-  std::unordered_set<InputUtils::Key> keysDown;
-  std::unordered_set<InputUtils::Key> keysUp;
+  std::unordered_set<InputUtils::Key> mKeysStates;
+  std::unordered_set<InputUtils::Key> mKeysDown;
+  std::unordered_set<InputUtils::Key> mKeysUp;
 
   // Mouse
-  std::unordered_set<InputUtils::MouseButton> mouseButtonsState;
-  std::unordered_set<InputUtils::MouseButton> mouseButtonsDown;
-  std::unordered_set<InputUtils::MouseButton> mouseButtonsUp;
+  std::unordered_set<InputUtils::MouseButton> mMouseButtonsState;
+  std::unordered_set<InputUtils::MouseButton> mMouseButtonsDown;
+  std::unordered_set<InputUtils::MouseButton> mMouseButtonsUp;
 
-  InputUtils::CursorMode cursorMode;
-  glm::vec2 mousePosition;
-  glm::vec2 mouseDeltaValue;
+  InputUtils::CursorMode mCursorMode;
+  glm::vec2 mMousePosition;
+  glm::vec2 mMouseDeltaValue;
 };
 
 static inline InputUtils::KeyState

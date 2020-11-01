@@ -4,10 +4,12 @@
 #include "../common/Profiler.h"
 
 namespace VulkanEngine {
+
+entt::sigh<void(int &, int &)> Window::mFramebufferSignal;
+
 Window::Window(const WindowDesc &winDesc, const std::string &title)
-    : window(nullptr), windowDescription(winDesc), minimalized(false),
-      resized(false) {
-  PROFILE_FUNCTION()
+    : mWindow(nullptr), mWindowDescription(winDesc), mMinimalized(false),
+      mResized(false), mTitle(title), mFramebuffer(mFramebufferSignal) {
   glfwSetErrorCallback(glfwUtils::error_callback);
 
   if (glfwInit() != GLFW_TRUE) {
@@ -15,106 +17,94 @@ Window::Window(const WindowDesc &winDesc, const std::string &title)
   }
 
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
   // window support only one monitor at the same time
-  window = glfwCreateWindow(windowDescription.width, windowDescription.height,
+  mWindow = glfwCreateWindow(mWindowDescription.width, mWindowDescription.height,
                             title.c_str(), nullptr, nullptr);
 
-  if (window == nullptr) {
+  if (mWindow == nullptr) {
     throw std::exception("Failed to create window");
   }
+
   LOG("GLFW {0}.{1}.{2} has been initialized", GLFW_VERSION_MAJOR,
       GLFW_VERSION_MINOR, GLFW_VERSION_REVISION);
 
-  glfwSetWindowUserPointer(window, this);
+  glfwSetWindowUserPointer(mWindow, this);
 
-  input = std::unique_ptr<Input>(new Input(window));
+  mInput = std::unique_ptr<Input>(new Input(mWindow));
 
-  glfwSetWindowSizeCallback(window, &handleWindowResize);
-  glfwSetFramebufferSizeCallback(window, &handleFramebufferResize);
-  glfwSetWindowIconifyCallback(window, &handleMinimalize);
+  glfwSetWindowSizeCallback(mWindow, &Window::handleWindowResize);
+  glfwSetFramebufferSizeCallback(mWindow, &Window::handleFramebufferResize);
+  glfwSetWindowIconifyCallback(mWindow, &Window::handleMinimalize);
 
-  glfwSetKeyCallback(window, &handleKeyInput);
-  glfwSetMouseButtonCallback(window, &handleMouseButton);
-  glfwSetCursorPosCallback(window, &handleMousePosition);
+  glfwSetKeyCallback(mWindow, &Window::handleKeyInput);
+  glfwSetMouseButtonCallback(mWindow, &Window::handleMouseButton);
+  glfwSetCursorPosCallback(mWindow, &Window::handleMousePosition);
 
   int fbWidth, fbHeight;
-  glfwGetFramebufferSize(window, &fbWidth, &fbHeight);
-  framebufferWidth = static_cast<uint32_t>(fbWidth);
-  framebufferHeight = static_cast<uint32_t>(fbHeight);
+  glfwGetFramebufferSize(mWindow, &fbWidth, &fbHeight);;
+  mFramebufferSignal.publish(fbWidth, fbHeight);
 }
 
-Window::~Window() {
-  PROFILE_FUNCTION()
-  destroyWindow();
-}
+Window::~Window() { destroyWindow(); }
 
 void Window::destroyWindow() {
-  if (window != nullptr) {
-    glfwDestroyWindow(window);
+  if (mWindow != nullptr) {
+    glfwDestroyWindow(mWindow);
   }
 }
 
 void Window::update() {
-  PROFILE_FUNCTION()
-  input->reset();
+  mInput->reset();
 
-  if (minimalized) {
+  if (mMinimalized) {
     glfwWaitEvents();
   } else {
     glfwPollEvents();
   }
 
-  if (resized) {
-    resized = false;
+  if (mResized) {
+    mResized = false;
 
     // do something in the future
   }
 }
 
 void Window::handleFramebufferResize(GLFWwindow *win, int w, int h) {
-  PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
-  window->resized = true;
-  window->framebufferWidth = static_cast<std::int32_t>(w);
-  window->framebufferHeight = static_cast<std::int32_t>(h);
-  // TODO: Vulkan must handle this
+  window->mResized = true;
+  mFramebufferSignal.publish(w, h);
 }
 
 void Window::handleWindowResize(GLFWwindow *win, int w, int h) {
-  PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
-  window->resized = true;
-  window->windowDescription.width = static_cast<std::int32_t>(w);
-  window->windowDescription.height = static_cast<std::int32_t>(h);
-  // TODO: Vulkan must handle this
+  window->mResized = true;
+  window->mWindowDescription.width = static_cast<std::int32_t>(w);
+  window->mWindowDescription.height = static_cast<std::int32_t>(h);
 }
 
 void Window::handleMinimalize(GLFWwindow *win, int status) {
-  PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
-  window->minimalized = static_cast<bool>(status);
+  window->mMinimalized = static_cast<bool>(status);
 }
 
 void Window::handleKeyInput(GLFWwindow *win, int key, int scancode, int action,
                             int mods) {
-  PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
-  Input *input = window->input.get();
+  Input *input = window->mInput.get();
   input->handleKeyInput(key, scancode, action, mods);
 }
 
 void Window::handleMousePosition(GLFWwindow *win, double xPos, double yPos) {
-  PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
-  Input *input = window->input.get();
+  Input *input = window->mInput.get();
   input->handleMousePosition(xPos, yPos);
 }
 
 void Window::handleMouseButton(GLFWwindow *win, int mouseButton, int action,
                                int mods) {
-  PROFILE_FUNCTION()
   auto window = getInternalWindow(win);
-  Input *input = window->input.get();
+  Input *input = window->mInput.get();
   input->handleMouseButton(mouseButton, action, mods);
 }
 } // namespace VulkanEngine

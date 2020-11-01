@@ -6,27 +6,27 @@ using VulkanEngine::InputUtils::KeyState;
 using VulkanEngine::InputUtils::MouseButton;
 
 namespace VulkanEngine {
-Input::Input(GLFWwindow *window_) : window(window_) {}
+Input::Input(GLFWwindow *window_) : mWindow(window_) {}
 
 void Input::handleKeyInput(int inKey, int scancode, int action, int mods) {
   const Key key = static_cast<Key>(inKey);
-  auto it = keysStates.find(key);
+  auto it = mKeysStates.find(key);
 
-  if (it == keysStates.end()) { // key is not pressed
+  if (it == mKeysStates.end()) { // key is not pressed
     if (action == GLFW_PRESS) {
-      auto data = keysStates.insert(key);
+      auto data = mKeysStates.insert(key);
 
       if (data.second) {
-        keysDown.insert(key);
+        mKeysDown.insert(key);
       }
     }
   } else { // key is pressed
     if (action == GLFW_RELEASE) {
-      auto itPressKey = keysStates.find(key); // find key if pressed
+      auto itPressKey = mKeysStates.find(key); // find key if pressed
 
-      if (itPressKey != keysStates.end()) {
-        keysStates.erase(itPressKey);
-        keysUp.insert(key);
+      if (itPressKey != mKeysStates.end()) {
+        mKeysStates.erase(itPressKey);
+        mKeysUp.insert(key);
       }
     }
   }
@@ -35,53 +35,53 @@ void Input::handleKeyInput(int inKey, int scancode, int action, int mods) {
 void Input::handleMousePosition(double xPos, double yPos) {
   glm::vec2 newPosition = {static_cast<float>(xPos), static_cast<float>(yPos)};
 
-  mouseDeltaValue = newPosition - mousePosition;
-  mousePosition = newPosition;
+  mMouseDeltaValue = newPosition - mMousePosition;
+  mMousePosition = newPosition;
 }
 
 void Input::handleMouseButton(int mouseButton, int action, int modes) {
   const MouseButton button = static_cast<MouseButton>(mouseButton);
-  auto it = mouseButtonsState.find(button);
+  auto it = mMouseButtonsState.find(button);
 
-  if (it == mouseButtonsState.end()) { // button is not pressed
+  if (it == mMouseButtonsState.end()) { // button is not pressed
     if (action == GLFW_PRESS) {
-      auto data = mouseButtonsState.insert(button);
+      auto data = mMouseButtonsState.insert(button);
 
       if (data.second) {
-        mouseButtonsDown.insert(button);
+        mMouseButtonsDown.insert(button);
       }
     }
   } else { // button is pressed
     if (action == GLFW_RELEASE) {
       auto itPressKey =
-          mouseButtonsState.find(button); // find button if pressed
+          mMouseButtonsState.find(button); // find button if pressed
 
-      if (itPressKey != mouseButtonsState.end()) {
-        mouseButtonsState.erase(itPressKey);
-        mouseButtonsUp.insert(button);
+      if (itPressKey != mMouseButtonsState.end()) {
+        mMouseButtonsState.erase(itPressKey);
+        mMouseButtonsUp.insert(button);
       }
     }
   }
 }
 
 void Input::reset() {
-  mouseDeltaValue = {};
+  mMouseDeltaValue = {};
 
-  keysDown.clear();
-  keysUp.clear();
+  mKeysDown.clear();
+  mKeysUp.clear();
 
-  mouseButtonsDown.clear();
-  mouseButtonsUp.clear();
+  mMouseButtonsDown.clear();
+  mMouseButtonsUp.clear();
 }
 
 bool Input::keyDown(Key key) const {
-  return keysDown.find(key) != keysDown.end();
+  return mKeysDown.find(key) != mKeysDown.end();
 }
 
-bool Input::keyUp(Key key) const { return keysUp.find(key) != keysUp.end(); }
+bool Input::keyUp(Key key) const { return mKeysUp.find(key) != mKeysUp.end(); }
 
 bool Input::keyHold(Key key) const {
-  return keysStates.find(key) != keysStates.end();
+  return mKeysStates.find(key) != mKeysStates.end();
 }
 
 KeyState Input::keyState(Key key) const {
@@ -103,15 +103,15 @@ KeyState Input::keyState(Key key) const {
 }
 
 bool Input::mouseButtonDown(MouseButton button) const {
-  return mouseButtonsDown.find(button) != mouseButtonsDown.end();
+  return mMouseButtonsDown.find(button) != mMouseButtonsDown.end();
 }
 
 bool Input::mouseButtonUp(MouseButton button) const {
-  return mouseButtonsUp.find(button) != mouseButtonsUp.end();
+  return mMouseButtonsUp.find(button) != mMouseButtonsUp.end();
 }
 
 bool Input::mouseButtonHold(MouseButton button) const {
-  return mouseButtonsState.find(button) != mouseButtonsState.end();
+  return mMouseButtonsState.find(button) != mMouseButtonsState.end();
 }
 
 KeyState Input::mouseState(MouseButton button) const {
@@ -131,21 +131,21 @@ KeyState Input::mouseState(MouseButton button) const {
 }
 
 void Input::setCursorMode(InputUtils::CursorMode mode) {
-  if (mode == cursorMode)
+  if (mode == mCursorMode)
     return;
 
   if (mode == CursorMode::Normal) {
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
   } else if (mode == CursorMode::Hided) {
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   }
 
-  cursorMode = mode;
+  mCursorMode = mode;
 
   double cursorX, cursorY;
-  glfwGetCursorPos(window, &cursorX, &cursorY);
+  glfwGetCursorPos(mWindow, &cursorX, &cursorY);
 
-  mousePosition = {static_cast<float>(cursorX), static_cast<float>(cursorY)};
-  mouseDeltaValue = {};
+  mMousePosition = {static_cast<float>(cursorX), static_cast<float>(cursorY)};
+  mMouseDeltaValue = {};
 }
 } // namespace VulkanEngine

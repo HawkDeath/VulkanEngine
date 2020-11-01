@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <entt/signal/sigh.hpp>
 
 #include <cstdint>
 #include <memory>
@@ -19,25 +20,23 @@ public:
          const std::string &title = "framework-test");
   ~Window();
 
-  GLFWwindow *getWindowHandler() const { return window; }
+  GLFWwindow *getWindowHandler() const { return mWindow; }
 
-  const WindowDesc &getDescription() const { return windowDescription; }
+  const WindowDesc &getDescription() const { return mWindowDescription; }
 
-  Input &getInput() const { return *input; }
+  Input &getInput() const { return *mInput; }
 
-  const std::int32_t getFrameBufferWidth() const { return framebufferWidth; }
-
-  const std::int32_t getFrameBufferHeight() const { return framebufferHeight; }
-
-  bool isMinimalized() const {
-    return minimalized || framebufferHeight == 0 || framebufferWidth == 0;
-  }
+  bool isMinimalized() const { return mMinimalized; }
 
   bool shouldClose() const {
-    return static_cast<bool>(glfwWindowShouldClose(window));
+    return static_cast<bool>(glfwWindowShouldClose(mWindow));
   }
 
   void update();
+
+  entt::sink<void(std::int32_t &, std::int32_t &)> framebuffer() {
+    return mFramebuffer;
+  }
 
 private:
   void destroyWindow();
@@ -57,15 +56,16 @@ private:
   }
 
 private:
-  GLFWwindow *window;
-  WindowDesc windowDescription;
+  GLFWwindow *mWindow;
+  WindowDesc mWindowDescription;
 
-  std::int32_t framebufferWidth;
-  std::int32_t framebufferHeight;
+  bool mMinimalized;
+  bool mResized;
 
-  bool minimalized;
-  bool resized;
+  std::string mTitle;
+  std::unique_ptr<Input> mInput;
 
-  std::unique_ptr<Input> input;
+  static entt::sigh<void(std::int32_t &, std::int32_t &)> mFramebufferSignal;
+  entt::sink<void(std::int32_t &, std::int32_t &)> mFramebuffer;
 };
 } // namespace VulkanEngine
