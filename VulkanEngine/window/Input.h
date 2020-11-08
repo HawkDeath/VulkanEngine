@@ -11,7 +11,7 @@
 #include "InputUtils.h"
 
 namespace VulkanEngine {
-class Input final {
+class Input final : public std::enable_shared_from_this<Input> {
   friend class Window;
 
 public:
