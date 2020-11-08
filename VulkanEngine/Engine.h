@@ -1,8 +1,8 @@
 #pragma once
 
+#include "common/Log.h"
 #include "renderer/VulkanDevice.h"
 #include "window/Window.h"
-#include "common/Log.h"
 #include <cstdint>
 #include <memory>
 
@@ -18,11 +18,11 @@ public:
 
   std::int32_t run();
 
-  private:
+private:
   void initialize();
 
 private:
-  //void updateFrame(int &_w, int &_h) {
+  // void updateFrame(int &_w, int &_h) {
   //  w = _w;
   //  h = _h;
   //  LOG("width {0}, height {1}", w, h);

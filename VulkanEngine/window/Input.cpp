@@ -74,17 +74,19 @@ void Input::reset() {
   mMouseButtonsUp.clear();
 }
 
-bool Input::keyDown(Key key) const {
+bool Input::keyDown(Key key) const noexcept {
   return mKeysDown.find(key) != mKeysDown.end();
 }
 
-bool Input::keyUp(Key key) const { return mKeysUp.find(key) != mKeysUp.end(); }
+bool Input::keyUp(Key key) const noexcept {
+  return mKeysUp.find(key) != mKeysUp.end();
+}
 
-bool Input::keyHold(Key key) const {
+bool Input::keyHold(Key key) const noexcept {
   return mKeysStates.find(key) != mKeysStates.end();
 }
 
-KeyState Input::keyState(Key key) const {
+KeyState Input::keyState(Key key) const noexcept {
   KeyState result = KeyState::None;
 
   if (keyDown(key)) {
@@ -102,19 +104,19 @@ KeyState Input::keyState(Key key) const {
   return result;
 }
 
-bool Input::mouseButtonDown(MouseButton button) const {
+bool Input::mouseButtonDown(MouseButton button) const noexcept {
   return mMouseButtonsDown.find(button) != mMouseButtonsDown.end();
 }
 
-bool Input::mouseButtonUp(MouseButton button) const {
+bool Input::mouseButtonUp(MouseButton button) const noexcept {
   return mMouseButtonsUp.find(button) != mMouseButtonsUp.end();
 }
 
-bool Input::mouseButtonHold(MouseButton button) const {
+bool Input::mouseButtonHold(MouseButton button) const noexcept {
   return mMouseButtonsState.find(button) != mMouseButtonsState.end();
 }
 
-KeyState Input::mouseState(MouseButton button) const {
+KeyState Input::mouseState(MouseButton button) const noexcept {
   KeyState result = KeyState::None;
   if (mouseButtonDown(button)) {
     result |= KeyState::Down;

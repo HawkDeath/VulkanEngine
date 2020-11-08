@@ -8,7 +8,7 @@ namespace VulkanEngine {
 entt::sigh<void(int &, int &)> Window::mFramebufferSignal;
 
 Window::Window(const WindowDesc &winDesc, const std::string &title)
-    : mWindow(nullptr), mWindowDescription(winDesc), mMinimalized(false),
+    : mWindow(nullptr, WinDestroyer()), mWindowDescription(winDesc), mMinimalized(false),
       mResized(false), mTitle(title), mFramebuffer(mFramebufferSignal) {
   glfwSetErrorCallback(glfwUtils::error_callback);
 

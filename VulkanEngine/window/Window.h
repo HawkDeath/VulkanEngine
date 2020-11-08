@@ -9,7 +9,7 @@
 
 #include "Input.h"
 #include "WindowDesc.h"
-
+#include "../common/Log.h"
 // class HelloTriangleApplication;
 
 namespace VulkanEngine {
@@ -20,13 +20,13 @@ public:
          const std::string &title = "framework-test");
   ~Window() = default;
 
-  GLFWwindow *getWindowHandler() const { return mWindow.get(); }
+  GLFWwindow *getWindowHandler() const noexcept { return mWindow.get(); }
 
-  const WindowDesc &getDescription() const { return mWindowDescription; }
+  const WindowDesc &getDescription() const noexcept { return mWindowDescription; }
 
-  Input &getInput() const { return *mInput; }
+  Input &getInput() const noexcept { return *mInput; }
 
-  bool isMinimalized() const { return mMinimalized; }
+  bool isMinimalized() const noexcept { return mMinimalized; }
 
   bool shouldClose() const {
     return static_cast<bool>(glfwWindowShouldClose(mWindow.get()));
@@ -57,6 +57,7 @@ private:
   struct WinDestroyer {
     void operator()(GLFWwindow *win) {
       if (win != nullptr) {
+        LOG("Window has been delete");
         glfwDestroyWindow(win);
       }
     }

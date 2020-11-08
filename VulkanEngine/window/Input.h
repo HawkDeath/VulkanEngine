@@ -13,18 +13,19 @@ class Input final {
 
 public:
   // Keyboard
-  bool keyDown(InputUtils::Key key) const;
-  bool keyUp(InputUtils::Key key) const;
-  bool keyHold(InputUtils::Key key) const;
-  InputUtils::KeyState keyState(InputUtils::Key key) const;
+  bool keyDown(InputUtils::Key key) const noexcept;
+  bool keyUp(InputUtils::Key key) const noexcept;
+  bool keyHold(InputUtils::Key key) const noexcept;
+  InputUtils::KeyState keyState(InputUtils::Key key) const noexcept;
 
   // Mouse
-  bool mouseButtonDown(InputUtils::MouseButton button) const;
-  bool mouseButtonUp(InputUtils::MouseButton button) const;
-  bool mouseButtonHold(InputUtils::MouseButton button) const;
-  InputUtils::KeyState mouseState(InputUtils::MouseButton button) const;
+  bool mouseButtonDown(InputUtils::MouseButton button) const noexcept;
+  bool mouseButtonUp(InputUtils::MouseButton button) const noexcept;
+  bool mouseButtonHold(InputUtils::MouseButton button) const noexcept;
+  InputUtils::KeyState
+  mouseState(InputUtils::MouseButton button) const noexcept;
 
-  glm::vec2 mouseDelta() const { return mMouseDeltaValue; }
+  glm::vec2 mouseDelta() const noexcept { return mMouseDeltaValue; }
   void setCursorMode(InputUtils::CursorMode mode);
 
 private:

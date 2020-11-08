@@ -9,4 +9,4 @@ std::string current_time_and_date() {
   ss << std::put_time(std::localtime(&in_time_t), "%Y_%m_%d_%H_%M_%S");
   return ss.str();
 }
-}
+} // namespace VulkanEngine
