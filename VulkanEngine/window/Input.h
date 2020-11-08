@@ -3,6 +3,9 @@
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
+
+#include <functional>
+#include <unordered_map>
 #include <unordered_set>
 
 #include "InputUtils.h"
@@ -28,6 +31,10 @@ public:
   glm::vec2 mouseDelta() const noexcept { return mMouseDeltaValue; }
   void setCursorMode(InputUtils::CursorMode mode);
 
+  void reg(InputUtils::Key key, std::function<bool()> func) {
+    keyboardCallbacks.insert(std::make_pair(key, func));
+  }
+
 private:
   Input(GLFWwindow *window);
 
@@ -39,7 +46,21 @@ private:
 
   void reset();
 
+  void update() {
+    if (mKeysDown.empty())
+      return;
+    for (auto &key : mKeysDown) {
+      auto action = keyboardCallbacks.find(key);
+      if (action != keyboardCallbacks.end()) {
+        action->second();
+      }
+    }
+  }
+
 private:
+  // Callbacks
+  std::unordered_map < InputUtils::Key, std::function<bool()>> keyboardCallbacks;
+
   // Keyboard
   std::unordered_set<InputUtils::Key> mKeysStates;
   std::unordered_set<InputUtils::Key> mKeysDown;

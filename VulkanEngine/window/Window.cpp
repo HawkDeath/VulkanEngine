@@ -57,6 +57,7 @@ void Window::update() {
   } else {
     glfwPollEvents();
   }
+  mInput->update();
 
   if (mResized) {
     mResized = false;

@@ -15,3 +15,6 @@
     > Input system: if state not good look, change to callback system
     > Graph render
     > PBR
+
+11/08/2020:
+* Input system with predefine callbacks (see. Engine.cpp)
