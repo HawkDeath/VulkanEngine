@@ -6,7 +6,10 @@ using VulkanEngine::InputUtils::KeyState;
 using VulkanEngine::InputUtils::MouseButton;
 
 namespace VulkanEngine {
-Input::Input(GLFWwindow *window_) : mWindow(window_) {}
+Input::Input(GLFWwindow *window_)
+    : mWindow(window_), mCursorMode(CursorMode::Normal),
+      mMousePosition(glm::vec2(0.0f, 0.0f)),
+      mMouseDeltaValue(glm::vec2(0.0f, 0.0f)) {}
 
 void Input::handleKeyInput(int inKey, int scancode, int action, int mods) {
   const Key key = static_cast<Key>(inKey);

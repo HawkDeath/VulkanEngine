@@ -22,17 +22,16 @@ std::int32_t Engine::run() {
   initialize();
   // connect to window framebuffer
   // window->framebuffer().connect<&Engine::updateFrame>(this);
-  VulkanEngine::Input &input = mWindow->getInput();
+  auto input = mWindow->getInput();
   while (!mWindow->shouldClose()) {
     mWindow->update();
 
-    if (input.keyDown(VulkanEngine::InputUtils::Key::Escape)) {
+    if (input->keyDown(VulkanEngine::InputUtils::Key::Escape)) {
       LOG("Escape has been pressed")
       glfwSetWindowShouldClose(mWindow->getWindowHandler(), true);
     }
 
     mRenderDevice->present();
-
   }
   return 0;
 }

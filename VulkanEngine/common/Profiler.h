@@ -14,7 +14,7 @@ struct ProfileResult {
   std::string name;
   std::uint64_t start;
   std::uint64_t end;
-  std::uint32_t threadID;
+  std::uint64_t threadID;
 };
 
 struct ProfileSession {

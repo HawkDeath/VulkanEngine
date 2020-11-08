@@ -32,7 +32,7 @@ Window::Window(const WindowDesc &winDesc, const std::string &title)
 
   glfwSetWindowUserPointer(mWindow.get(), this);
 
-  mInput = std::unique_ptr<Input>(new Input(mWindow.get()));
+  mInput = std::shared_ptr<Input>(new Input(mWindow.get()));
 
   glfwSetWindowSizeCallback(mWindow.get(), &Window::handleWindowResize);
   glfwSetFramebufferSizeCallback(mWindow.get(),

@@ -7,9 +7,9 @@
 #include <memory>
 #include <string>
 
+#include "../common/Log.h"
 #include "Input.h"
 #include "WindowDesc.h"
-#include "../common/Log.h"
 // class HelloTriangleApplication;
 
 namespace VulkanEngine {
@@ -22,9 +22,11 @@ public:
 
   GLFWwindow *getWindowHandler() const noexcept { return mWindow.get(); }
 
-  const WindowDesc &getDescription() const noexcept { return mWindowDescription; }
+  const WindowDesc &getDescription() const noexcept {
+    return mWindowDescription;
+  }
 
-  Input &getInput() const noexcept { return *mInput; }
+  const std::shared_ptr<Input> getInput() const noexcept { return mInput; }
 
   bool isMinimalized() const noexcept { return mMinimalized; }
 
@@ -70,7 +72,7 @@ private:
   bool mResized;
 
   std::string mTitle;
-  std::unique_ptr<Input> mInput;
+  std::shared_ptr<Input> mInput;
 
   static entt::sigh<void(std::int32_t &, std::int32_t &)> mFramebufferSignal;
   entt::sink<void(std::int32_t &, std::int32_t &)> mFramebuffer;
