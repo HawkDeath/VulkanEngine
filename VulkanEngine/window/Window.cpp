@@ -19,8 +19,9 @@ Window::Window(const WindowDesc &winDesc, const std::string &title)
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
   // window support only one monitor at the same time
-  mWindow = glfwCreateWindow(mWindowDescription.width, mWindowDescription.height,
-                            title.c_str(), nullptr, nullptr);
+  mWindow.reset(glfwCreateWindow(mWindowDescription.width,
+                                 mWindowDescription.height, title.c_str(),
+                                 nullptr, nullptr));
 
   if (mWindow == nullptr) {
     throw std::exception("Failed to create window");
@@ -29,29 +30,23 @@ Window::Window(const WindowDesc &winDesc, const std::string &title)
   LOG("GLFW {0}.{1}.{2} has been initialized", GLFW_VERSION_MAJOR,
       GLFW_VERSION_MINOR, GLFW_VERSION_REVISION);
 
-  glfwSetWindowUserPointer(mWindow, this);
+  glfwSetWindowUserPointer(mWindow.get(), this);
 
-  mInput = std::unique_ptr<Input>(new Input(mWindow));
+  mInput = std::unique_ptr<Input>(new Input(mWindow.get()));
 
-  glfwSetWindowSizeCallback(mWindow, &Window::handleWindowResize);
-  glfwSetFramebufferSizeCallback(mWindow, &Window::handleFramebufferResize);
-  glfwSetWindowIconifyCallback(mWindow, &Window::handleMinimalize);
+  glfwSetWindowSizeCallback(mWindow.get(), &Window::handleWindowResize);
+  glfwSetFramebufferSizeCallback(mWindow.get(),
+                                 &Window::handleFramebufferResize);
+  glfwSetWindowIconifyCallback(mWindow.get(), &Window::handleMinimalize);
 
-  glfwSetKeyCallback(mWindow, &Window::handleKeyInput);
-  glfwSetMouseButtonCallback(mWindow, &Window::handleMouseButton);
-  glfwSetCursorPosCallback(mWindow, &Window::handleMousePosition);
+  glfwSetKeyCallback(mWindow.get(), &Window::handleKeyInput);
+  glfwSetMouseButtonCallback(mWindow.get(), &Window::handleMouseButton);
+  glfwSetCursorPosCallback(mWindow.get(), &Window::handleMousePosition);
 
   int fbWidth, fbHeight;
-  glfwGetFramebufferSize(mWindow, &fbWidth, &fbHeight);;
+  glfwGetFramebufferSize(mWindow.get(), &fbWidth, &fbHeight);
+  ;
   mFramebufferSignal.publish(fbWidth, fbHeight);
-}
-
-Window::~Window() { destroyWindow(); }
-
-void Window::destroyWindow() {
-  if (mWindow != nullptr) {
-    glfwDestroyWindow(mWindow);
-  }
 }
 
 void Window::update() {

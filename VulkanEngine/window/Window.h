@@ -18,9 +18,9 @@ class Window final {
 public:
   Window(const WindowDesc &winDesc,
          const std::string &title = "framework-test");
-  ~Window();
+  ~Window() = default;
 
-  GLFWwindow *getWindowHandler() const { return mWindow; }
+  GLFWwindow *getWindowHandler() const { return mWindow.get(); }
 
   const WindowDesc &getDescription() const { return mWindowDescription; }
 
@@ -29,7 +29,7 @@ public:
   bool isMinimalized() const { return mMinimalized; }
 
   bool shouldClose() const {
-    return static_cast<bool>(glfwWindowShouldClose(mWindow));
+    return static_cast<bool>(glfwWindowShouldClose(mWindow.get()));
   }
 
   void update();
@@ -39,8 +39,6 @@ public:
   }
 
 private:
-  void destroyWindow();
-
   static void handleFramebufferResize(GLFWwindow *win, int w, int h);
   static void handleWindowResize(GLFWwindow *win, int w, int h);
   static void handleMinimalize(GLFWwindow *win, int status);
@@ -56,7 +54,15 @@ private:
   }
 
 private:
-  GLFWwindow *mWindow;
+  struct WinDestroyer {
+    void operator()(GLFWwindow *win) {
+      if (win != nullptr) {
+        glfwDestroyWindow(win);
+      }
+    }
+  };
+
+  std::unique_ptr<GLFWwindow, WinDestroyer> mWindow;
   WindowDesc mWindowDescription;
 
   bool mMinimalized;
