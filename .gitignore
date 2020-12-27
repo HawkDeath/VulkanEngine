@@ -3,6 +3,9 @@
 .vscode/
 x64/
 VulkanEngine/x64/
+out/
+build/
+output/
 
 # logs
 VulkanEngine/*.log
